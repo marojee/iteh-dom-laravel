@@ -16,7 +16,7 @@ use App\Http\Controllers\StadioniController;
 |
 */
 
-Route::resource('drzave', DrzaveController::class);
+Route::resource('drzave', DrzaveController::class)->only('index', 'show', 'destroy', 'update');
 Route::resource('stadioni', StadioniController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Drzava;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DrzaveController extends Controller
 {
@@ -14,7 +15,7 @@ class DrzaveController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Drzava::all());
     }
 
     /**
@@ -44,9 +45,9 @@ class DrzaveController extends Controller
      * @param  \App\Models\Drzava  $drzava
      * @return \Illuminate\Http\Response
      */
-    public function show(Drzava $drzava)
+    public function show($id)
     {
-        //
+        return response()->json(Drzava::find($id));
     }
 
     /**
@@ -67,9 +68,28 @@ class DrzaveController extends Controller
      * @param  \App\Models\Drzava  $drzava
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Drzava $drzava)
+    public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'naziv' => 'required|string',
+            'trener' => 'required|string',
+            'kapiten' => 'required|string',
+            'broj_titula' => 'required|integer'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $drzava = Drzava::find($id);
+        $drzava->naziv = $request->naziv;
+        $drzava->trener = $request->trener;
+        $drzava->kapiten = $request->kapiten;
+        $drzava->broj_titula = $request->broj_titula;
+
+        $drzava->save();
+
+        return response()->json('Drzava azurirana');
     }
 
     /**
@@ -78,8 +98,10 @@ class DrzaveController extends Controller
      * @param  \App\Models\Drzava  $drzava
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Drzava $drzava)
+    public function destroy($id)
     {
-        //
+        Drzava::find($id)->delete();
+
+        return response()->json('Drzava obrisana');
     }
 }
