@@ -14,7 +14,7 @@ class StadioniController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Stadion::all());
     }
 
     /**
@@ -44,9 +44,9 @@ class StadioniController extends Controller
      * @param  \App\Models\Stadion  $stadion
      * @return \Illuminate\Http\Response
      */
-    public function show(Stadion $stadion)
+    public function show($id)
     {
-        //
+        return response()->json(Stadion::find($id));
     }
 
     /**
